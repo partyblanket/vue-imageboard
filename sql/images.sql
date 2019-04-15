@@ -6,26 +6,35 @@ CREATE TABLE images(
     username VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     description TEXT,
+    score INTEGER,
+    tag VARCHAR(50)[],
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO images (url, username, title, description) VALUES (
+INSERT INTO images (url, username, title, description, score, tag) VALUES (
     'https://s3.amazonaws.com/spicedling/jAVZmnxnZ-U95ap2-PLliFFF7TO0KqZm.jpg',
     'funkychicken',
     'Welcome to Berlin and the future!',
-    'This photo brings back so many great memories.'
+    'This photo brings back so many great memories.',
+    1,
+    ARRAY ['kitty', 'berlin']
 );
 
-INSERT INTO images (url, username, title, description) VALUES (
+INSERT INTO images (url, username, title, description, score, tag) VALUES (
     'https://s3.amazonaws.com/spicedling/wg8d94G_HrWdq7bU_2wT6Y6F3zrX-kej.jpg',
     'discoduck',
     'Elvis',
-    'We can''t go on together with suspicious minds.'
+    'We can''t go on together with suspicious minds.',
+    1,
+    ARRAY ['elvis', 'USA']
 );
 
-INSERT INTO images (url, username, title, description) VALUES (
+
+INSERT INTO images (url, username, title, description, score, tag) VALUES (
     'https://s3.amazonaws.com/spicedling/XCv4AwJdm6QuzjenFPKJocpipRNNMwze.jpg',
     'discoduck',
     'Hello Berlin',
-    'This is going to be worth a lot of money one day.'
+    'This is going to be worth a lot of money one day.',
+    1,
+    ARRAY ['berlin']
 );
