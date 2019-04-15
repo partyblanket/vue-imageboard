@@ -11,7 +11,11 @@
         <header>LOGO</header>
         <div id='content'>
             <div class='card' v-for="item in items" :key="item.id">
-                <div class="score"></div>
+                <div class="score">
+                    <img v-on:click="click(item, 'up')" class="arrow" src="./css/arrow.svg" alt="">
+                    <div>{{item.score}}</div>
+                    <img v-on:click="click(item)" class="arrow down" src="./css/arrow.svg" alt="">
+                </div>
                 <div class="title">{{item.title}}</div>
                 <img :src="item.url">
                 <div class="tag">{{item.tag}}<div>
