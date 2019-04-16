@@ -1,16 +1,98 @@
+html {
+    font-size: 10px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    -webkit-backface-visibility: none; /*fix chrome bug*/
+
+}
+
 #main {
 
 }
 
 header {
+    height: 5rem;
+    border-bottom: 1px solid blue;
+    display: flex;
+    align-items: center;
+}
+
+header #logo {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 5rem;
+}
+
+header #tags {
+    font-size: 3rem;
+    margin: auto;
+}
+
+header #search-bar {
+    padding: 1rem;
+}
+
+header #pic-submit:hover {
+    cursor: pointer;
+}
+
+
+#submit-modal{
+    background-color: rgba(0,0,0,0.3);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#submit-modal.hidden {
+    display: none;
+}
+
+#submit-modal-container{
+    height: 60rem;
+    width: 40rem;
+    background: white;
+    padding: 2rem;
+
+
+
+    /* display: block; */
+    /* -webkit-transform: scale(1);
+    -webkit-transition: all linear 0.5s 0; */
+}
+
+
+
+
+/* .modal-open #submit-modal {
+  /* -webkit-filter: blur(3px);
+  -ms-filter: blur(3px);
+  -o-filter: blur(3px);
+  filter: blur(3px);
+  -webkit-transform: scale(0.8); */
 
 }
+
+
+
+
 
 #content {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .card {
+
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: auto;
@@ -19,37 +101,49 @@ header {
         "score img"
         "score tag";
     border: 1px solid grey;
-    /* height: 200px;
-    width: 250px; */
-    margin: 20px;
+    border-radius: 5px;
+    margin: 2rem;
+    width: 55rem;
+
 }
 
 .card img{
     grid-area: img;
-    height: 450px;
-    width: 350px;
+    height: 60rem;
+    width: 45rem;
     object-fit: cover;
+    padding: 1rem;
+
 }
 
 .card .score {
-    padding-top: 30px;
+
+    padding-top: 3rem;
     grid-area: score;
     text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
 }
 
 .card .title {
+    padding: 1rem;
+    padding-bottom: 0.2rem;
     grid-area: title;
+    font-size: 2rem;
+    font-weight: 800;
+
 }
 
 .card .tag {
     grid-area: tag;
+
 }
 
 .card img.arrow {
-    padding: 5px;
+    padding: .5rem;
 
-    height: 35px;
-    width: 35px;
+    height: 3.5rem;
+    width: 3.5rem;
     transform: rotate(-90deg);
 }
 
