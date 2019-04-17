@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS images;
+DROP TABLE IF EXISTS comments;
 
 CREATE TABLE images(
     id SERIAL PRIMARY KEY,
@@ -11,6 +12,15 @@ CREATE TABLE images(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE comments(
+    id SERIAL PRIMARY KEY,
+    score INTEGER,
+    comment TEXT NOT NULL,
+    username VARCHAR(255) NOT NULL,
+    imageid INTEGER REFERENCES images(id) ON DELETE CASCADE NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO images (url, username, title, description, score, tag) VALUES (
     'https://s3.amazonaws.com/spicedling/jAVZmnxnZ-U95ap2-PLliFFF7TO0KqZm.jpg',
     'funkychicken',
@@ -19,7 +29,6 @@ INSERT INTO images (url, username, title, description, score, tag) VALUES (
     1,
     ARRAY ['kitty', 'berlin']
 );
-
 INSERT INTO images (url, username, title, description, score, tag) VALUES (
     'https://s3.amazonaws.com/spicedling/wg8d94G_HrWdq7bU_2wT6Y6F3zrX-kej.jpg',
     'discoduck',

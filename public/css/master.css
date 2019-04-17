@@ -35,12 +35,20 @@ header #search-bar {
     padding: 1rem;
 }
 
+header #pic-submit {
+    cursor: pointer;
+    border: 1px solid rgba(238, 238, 238, 1);
+    font-size: 1.5rem;
+    padding: .5rem;
+    margin-right: 1rem;
+}
+
 header #pic-submit:hover {
     cursor: pointer;
 }
 
 
-#submit-modal{
+.modal-background{
     background-color: rgba(0,0,0,0.3);
     position: fixed;
     top: 0;
@@ -52,7 +60,7 @@ header #pic-submit:hover {
     align-items: center;
 }
 
-#submit-modal.hidden {
+.hidden {
     display: none;
 }
 
@@ -79,7 +87,7 @@ header #pic-submit:hover {
   filter: blur(3px);
   -webkit-transform: scale(0.8); */
 
-}
+
 
 
 
@@ -139,7 +147,7 @@ header #pic-submit:hover {
 
 }
 
-.card img.arrow {
+img.arrow {
     padding: .5rem;
 
     height: 3.5rem;
@@ -147,6 +155,56 @@ header #pic-submit:hover {
     transform: rotate(-90deg);
 }
 
-.card img.arrow.down {
+img.arrow.down {
     transform: rotate(90deg);
+}
+
+div#dropzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999999999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: visibility 175ms, opacity 175ms;
+    display: table;
+    text-shadow: 1px 1px 2px #000;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.45);
+    font: bold 42px Oswald, DejaVu Sans, Tahoma, sans-serif;
+}
+
+#image-modal-container {
+    width: 90vw;
+    height: 90vh;
+    background: white;
+    border-radius: 5px;
+    z-index: 50;
+}
+
+#image-modal-container #modal-image {
+    margin: 1rem;
+    width: 90vw;
+    object-fit: contain;
+    object-position: top;
+    max-height: 50vh;
+}
+
+#modal-image-dets {
+    margin-left: 5rem;
+}
+
+#vote-tag {
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+}
+
+#vote-tag > * {
+
+}
+
+#vote-tag > img {
+
 }

@@ -16,3 +16,22 @@ exports.new = (url, username, title, description, score, tag) => {
     const params = [url, username, title, description, score, tag];
     return db.query(q, params)
 }
+
+exports.loadSingleImage = (id) => {
+    const q = `SELECT * FROM images WHERE $1 = id`
+    const params = [id];
+    return db.query(q, params)
+}
+
+exports.newComments = (imageid, comment, username) => {
+    const q = `INSERT INTO comments (imageid, comment, username)
+        VALUES ($1, $2, $3)`
+    const params = [imageid, comment, username];
+    return db.query(q, params)
+}
+
+exports.loadComments = (id) => {
+    const q = `SELECT * FROM comments WHERE imageid = $1`
+    const params = [id];
+    return db.query(q, params)
+}
