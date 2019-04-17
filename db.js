@@ -10,10 +10,10 @@ exports.load = () => {
     return db.query(q, params)
 }
 
-exports.new = (url, username, title, description, score, tag) => {
-    const q = `INSERT INTO images (url, username, title, description, score, tag)
-        VALUES ($1, $2, $3, $4, $5, $6)`
-    const params = [url, username, title, description, score, tag];
+exports.new = (url, username, title, description, score, tag, time) => {
+    const q = `INSERT INTO images (url, username, title, description, score, tag, time)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`
+    const params = [url, username, title, description, score, tag, time];
     return db.query(q, params)
 }
 
@@ -23,10 +23,10 @@ exports.loadSingleImage = (id) => {
     return db.query(q, params)
 }
 
-exports.newComments = (imageid, comment, username) => {
-    const q = `INSERT INTO comments (imageid, comment, username)
-        VALUES ($1, $2, $3)`
-    const params = [imageid, comment, username];
+exports.newComment = (imageid, comment, username, time) => {
+    const q = `INSERT INTO comments (imageid, comment, username, time)
+        VALUES ($1, $2, $3, $4)`
+    const params = [imageid, comment, username, time];
     return db.query(q, params)
 }
 

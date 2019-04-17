@@ -88,6 +88,18 @@ app.get('/content/:id', (req,res) => {
     db.loadSingleImage(req.params.id).then(({rows}) => res.json(rows))
 })
 
+app.get('/comment/:id', (req,res) => {
+    db.loadComments(req.params.id).then(({rows}) => res.json(rows))
+})
+
+app.post('/comment', (req,res) => {
+    console.log(req.body);
+    const {id, content, name} = req.body
+    db.newComment(id, content, name, Date.now())
+        .then(res.sendStatus(200))
+        .catch(e => res.sendStatus(500))
+})
+
 app.post('/upload', uploader.single('file'), uploadToAWS, function(req, res) {
     // If nothing went wrong the file is already in the uploads directory
         const url = 'https://s3.amazonaws.com/tabascoimageboard/' + req.file.filename
@@ -95,7 +107,7 @@ app.post('/upload', uploader.single('file'), uploadToAWS, function(req, res) {
             success: true,
             url
         });
-        db.new(url, req.body.name, req.body.title, req.body.description, 1, req.body.tags.split(',')).then(res => console.log(res))
+        db.new(url, req.body.name, req.body.title, req.body.description, 1, req.body.tags.split(','), Date.now()).then(res => console.log(res))
 });
 
 app.listen(PORT, () => console.log(`listening to port ${PORT}`))

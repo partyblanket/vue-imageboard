@@ -10,7 +10,11 @@ Vue.component('image-modal', {
                 tag: [],
                 url: '',
             },
-            comments: {}
+            comments: {},
+            newcomment: {
+                name: '',
+                content: '',
+            },
         };
     },
     props: ['id'],
@@ -32,11 +36,15 @@ Vue.component('image-modal', {
                         </div>
                     </div>
                     <div id='comments'>
+                        <div id='new-comment'>
+                                <textarea class='comment' v-model='newcomment.content' name='content' type='text' placeholder='write your stuff' rows="4" cols="50"></textarea>
+                                <input class='name' v-model='newcomment.name' name='name' type='text' placeholder='your name'>
+                                <input v-on:click="newComment" type="submit" value="Submit">
+                        </div>
+                        <div class='comment' v-for="comment in comments">
+
+                        </div>
                     </div>
-
-
-
-
             </div>
         </div>
     `,
@@ -45,7 +53,12 @@ Vue.component('image-modal', {
             if(this.id) {
                 axios.get('/content/'+this.id).then(function({data}) {
                     this.item = data[0]
-                    console.log(this.item);
+                }.bind(this))
+                .catch(error => console.log(error))
+
+                axios.get('/comment/' + this.id).then(function({data}) {
+                    this.comments = data
+                    console.log(this.comments);
                 }.bind(this))
                 .catch(error => console.log(error))
             }
@@ -55,12 +68,20 @@ Vue.component('image-modal', {
         loadImage () {
 
 
+
         },
         loadComments () {
 
         },
         newComment () {
+            axios.post('/comment', {...this.newcomment, id: this.id}).then(function(res) {
+                if(res.status === 200){
+                    console.log(res);
+                }else{
+                    console.log('ERROR status ' + res.status);
 
+                }
+            }.bind(this))
         },
         addHidden(e){
             document.getElementById('image-modal').classList.add('hidden')

@@ -58,6 +58,7 @@ header #pic-submit:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .hidden {
@@ -207,4 +208,11 @@ div#dropzone {
 
 #vote-tag > img {
 
+}
+
+#comments {
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+    margin-left: 5rem;
 }

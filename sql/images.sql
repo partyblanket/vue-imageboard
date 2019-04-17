@@ -9,7 +9,7 @@ CREATE TABLE images(
     description TEXT,
     score INTEGER,
     tag VARCHAR(50)[],
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at INTEGER
 );
 
 CREATE TABLE comments(
@@ -18,7 +18,7 @@ CREATE TABLE comments(
     comment TEXT NOT NULL,
     username VARCHAR(255) NOT NULL,
     imageid INTEGER REFERENCES images(id) ON DELETE CASCADE NOT NULL UNIQUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at INTEGER
 );
 
 INSERT INTO images (url, username, title, description, score, tag) VALUES (
