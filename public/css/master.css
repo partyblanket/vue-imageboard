@@ -177,11 +177,12 @@ div#dropzone {
 }
 
 #image-modal-container {
-    width: 90vw;
-    height: 90vh;
     background: white;
     border-radius: 5px;
     z-index: 50;
+    overflow: auto;
+    max-height: 90vh;
+    overflow: scroll;
 }
 
 #image-modal-container #modal-image {
@@ -211,8 +212,34 @@ div#dropzone {
 }
 
 #comments {
+    display: block;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-left: 5rem;
+    color: grey;
+
+}
+
+.comment-text {
+    font-weight: bold;
+}
+
+.comment {
+    display: block;
+    align-items: center;
+    font-size: 1.5rem;
+    margin-left: 5rem;
+    color: grey;
+}
+
+footer {
+    height: 5rem;
+    border-top: 1px solid blue;
     display: flex;
     align-items: center;
-    font-size: 4rem;
-    margin-left: 5rem;
+    justify-content: center;
+}
+
+footer > div {
+    padding: 2rem
 }

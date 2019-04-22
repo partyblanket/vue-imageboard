@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS images;
-DROP TABLE IF EXISTS comments;
+
 
 CREATE TABLE images(
     id SERIAL PRIMARY KEY,
@@ -9,16 +9,19 @@ CREATE TABLE images(
     description TEXT,
     score INTEGER,
     tag VARCHAR(50)[],
-    created_at INTEGER
+    created_at BIGINT
 );
+
+DROP TABLE IF EXISTS comments;
 
 CREATE TABLE comments(
     id SERIAL PRIMARY KEY,
     score INTEGER,
     comment TEXT NOT NULL,
     username VARCHAR(255) NOT NULL,
-    imageid INTEGER REFERENCES images(id) ON DELETE CASCADE NOT NULL UNIQUE,
-    created_at INTEGER
+    parentcomment INTEGER,
+    imageid INTEGER REFERENCES images(id) ON DELETE CASCADE NOT NULL,
+    created_at BIGINT
 );
 
 INSERT INTO images (url, username, title, description, score, tag) VALUES (
@@ -47,3 +50,9 @@ INSERT INTO images (url, username, title, description, score, tag) VALUES (
     1,
     ARRAY ['berlin']
 );
+
+SELECT id, url, description, score, tag, created_at, username, (score * 10000000000::bigint) / (1555786361321::bigint - created_at) as timescore
+            FROM images
+            ORDER BY timescore DESC
+            LIMIT 2
+            OFFSET 2

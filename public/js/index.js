@@ -1,25 +1,34 @@
-
+// check if double downlpad prevent worls (recentupload)
 (()=>{
+    const DEFAULTS = {
+        form: {
+            title: '',
+            description: '',
+            name: '',
+            tags: '',
+            file: null,
+        }
+    }
+
     new Vue({
         el:'#main',
         data: {
             items: [],
             tags: [],
-            form: {
-                title: '',
-                description: '',
-                name: '',
-                tags: '',
-                file: null,
-            },
-            modalid: null,
+            title: '',
+            description: '',
+            name: '',
+            formtags: '',
+            file: '',
+            current: '',
+            picsPerPage: "6",
+            offset: "0",
+            recentUpload: null,
+            totalPics: null,
         },
         mounted: function(){
-            axios.get('/content').then(function({data}) {
-                this.items = data
-                this.sortTags()
-            }.bind(this))
-            .catch(error => console.log(error))
+
+            this.loadImages()
 
             window.addEventListener("dragenter", function (e) {
                     document.querySelector("#dropzone").style.visibility = "";
@@ -42,56 +51,93 @@
             });
 
             window.addEventListener("drop", function (e) {
+                // console.log("Drop files:", e);
                 e.preventDefault();
                 document.querySelector("#dropzone").style.visibility = "hidden";
                 document.querySelector("#dropzone").style.opacity = 0;
                 document.querySelector("#textnode").style.fontSize = "42px";
 
-                console.log("Drop files:", files);
-                this.form.file = e.dataTransfer.files[0]
-                console.log(this);
+                // console.log("Drop files:", e);
+                // this.file = e.dataTransfer.files[0]
                 this.showSubmit()
             }.bind(this));
+
+            
+
+            this.current = location.hash.slice(1);
+
+            window.addEventListener('hashchange', function() {
+                console.log(location.hash);
+                const hash = location.hash.slice(1)
+                if(hash.indexOf('/') === -1) {
+                    this.current = hash;
+                }else{
+                    const hashDets = hash.split('/')
+                    this.picsPerPage = hashDets[0]
+                    this.offset = hashDets[1]
+                }
+            }.bind(this))
         },
         methods: {
-            vote: function (item, up) {
-                up ? item.score++ : item.score--
-            }.bind(this),
-            sortTags () {
+            vote: function (id, up) {
+                for (let item of this.items) {
+                    if (item.id === id) {
+                        up ? item.score++ : item.score--
+                    }
+                }
+                this.syncVote(id, up ? 1 : -1)
+            },
+            syncVote(id, score) {
+                const data = {
+                    id,
+                    score
+                }
+                axios.post('/score', data)
+                .then(x=>x)
+                .catch(err => console.log(err))
+            },
+            sortTags: function () {
                 const temp = []
                 this.items.forEach(el => {
                     temp.push(...el.tag)
                 })
                 this.tags = [...new Set(temp)]
 
-            },openImageModal({id}){
-                this.modalid = id
-                document.getElementById('image-modal').classList.remove('hidden')
             },
+
             handleFileSelect (e) {
-                this.form.file = e.explicitOriginalTarget.files[0]
+                this.file = e.target.files[0]
             },
+
+            drop (e) {
+                // console.log(e);
+            },
+
             submitNew () {
-                const form = new FormData();
-                form.append('file', this.form.file)
-                form.append('title', this.form.title)
-                form.append('description', this.form.description)
-                form.append('name', this.form.name)
-                form.append('tags', this.form.tags)
-                axios.post('/upload', form).then(function(res) {
+                if(this.recentUpload === this.file) return console.log('file uploaded already')
+                const formToSubmit = new FormData();
+                formToSubmit.append('file', this.file)
+                formToSubmit.append('title', this.title)
+                formToSubmit.append('description', this.description)
+                formToSubmit.append('name', this.name)
+                formToSubmit.append('tags', this.formtags)
+
+                axios.post('/upload', formToSubmit).then(function(res) {
                     if(res.status === 200){
                         this.items.unshift({
-                            title: this.form.title,
-                            description: this.form.description,
-                            tags: this.form.tags.split(','),
+                            title: this.title,
+                            description: this.description,
+                            tags: this.formtags.split(','),
                             url: res.data.url,
                             score: 1,
                         })
+                        this.recentUpload = this.file
+                        this.title = this.description = this.name = this.formtags = this.file = ''
+                        this.loadImages()
                     }else{
                         console.log('ERROR status ' + res.status);
-
                     }
-                    addHidden()
+                    this.addHidden()
                 }.bind(this))
             },
             showSubmit () {
@@ -99,9 +145,35 @@
             },
             addHidden () {
                 document.getElementById('submit-modal').classList.add('hidden')
-            }
+            },
+            linkTo: function (id) {
+                location.href = 'http://localhost:8080/#'+id
+            }.bind(this),
+            loadImages: function (more) {
+                if(!more) {
+                    this.items = []
+                }
+                axios.get('/contents/' + this.picsPerPage + '/' + this.offset).then(function({data}) {
+                    this.items.push(...data.pics)
+                    this.totalPics = data.count
+                    this.offset = Number(this.offset) + Number(this.picsPerPage)
+                    this.sortTags()
+                }.bind(this))
+                .catch(error => console.log(error))
+            },
+
 
         },
+        watch: {
+            current: function () {
+                if (this.current) {
+                    document.getElementById('image-modal').classList.remove('hidden')
+                }
+
+            },
+            // offset: function() {this.loadImages()},
+            // picsPerPage: function() {this.loadImages()},
+        }
 
     })
 })()

@@ -16,7 +16,7 @@ const db = require('./db')
 
 const app = express()
 
-const PORT = 8080
+const PORT = process.env.PORT || 8080
 
 //handles file uploads ==>
 const diskStorage = multer.diskStorage({
@@ -80,8 +80,14 @@ app.use(express.static('./public'))
 
 app.use(require('body-parser').json())
 
-app.get('/content', (req,res) => {
-    db.load().then(({rows}) => res.json(rows))
+app.get('/contents/:amnt/:offset', (req,res) => {
+    const {amnt, offset} = req.params
+    Promise.all([
+        db.load(amnt, offset),
+        db.count()
+    ]).then(response => {
+        return res.json({pics: response[0].rows, count: response[1].rows[0].count})
+    })
 })
 
 app.get('/content/:id', (req,res) => {
@@ -93,11 +99,31 @@ app.get('/comment/:id', (req,res) => {
 })
 
 app.post('/comment', (req,res) => {
-    console.log(req.body);
-    const {id, content, name} = req.body
-    db.newComment(id, content, name, Date.now())
-        .then(res.sendStatus(200))
+    const {id, content, name, parent} = req.body
+    db.newComment(id, content, name, Date.now(), Number(parent))
+        .then(response => {
+            return res.sendStatus(200)
+        })
         .catch(e => res.sendStatus(500))
+})
+
+app.post('/score', (req,res) => {
+    const {score, id} = req.body
+    if(score > 5) {
+        score = 5
+    }else if (score < -5){
+        score = -5
+    }
+    console.log(score, id);
+    db.vote(score, id)
+        .then(response => {
+            console.log(res);
+            return res.sendStatus(200)
+        })
+        .catch(e => {
+            console.log(e)
+            res.sendStatus(500)
+        })
 })
 
 app.post('/upload', uploader.single('file'), uploadToAWS, function(req, res) {

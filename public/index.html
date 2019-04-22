@@ -8,21 +8,22 @@
 <body>
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
+
     <div id="main">
-        <image-modal :id='modalid'></image-modal>
+        <image-modal :modalitem='current' @vote='vote'></image-modal>
         <!-- File Drop Zone -->
-        <div style="visibility:hidden; opacity:0" id="dropzone">
+        <div style="visibility:hidden; opacity:0" id="dropzone" @drop='drop'>
             <div id="textnode">Drop files to add data.</div>
         </div>
-        <div id='submit-modal' class='modal-background hidden' @click.self='addHidden'>
+        <div id='submit-modal' class='modal-background hidden' @click.self='addHidden' >
         <div id="submit-modal-container">
             <div>Upload a picture</div>
-            <div><input v-model='form.title' name='title' type='text' placeholder='title'></div>
-            <div><input v-model='form.description' name='description' type='text' placeholder='description'></div>
-            <div><input v-model='form.tags' name='tags' type='text' placeholder='tags (seperate by comma)'></div>
-            <div><input v-model='form.name' name='name' type='text' placeholder='name'></div>
+            <div><input v-model='title' name='title' type='text' placeholder='title'></div>
+            <div><input v-model='description' name='description' type='text' placeholder='description'></div>
+            <div><input v-model='formtags' name='tags' type='text' placeholder='tags (seperate by comma)'></div>
+            <div><input v-model='name' name='name' type='text' placeholder='name'></div>
             <div class='preview-pic'></div>
-            <div><input @change='handleFileSelect' name='file' type='file' accept="image/*" :value='form.file'></div>
+            <div><input @change='handleFileSelect' name='file' type='file' accept="image/*" :value='file'></div>
             <div><input @click="submitNew" type="submit" value="Submit"></div>
         </div>
         </div>
@@ -31,7 +32,7 @@
             <div id='logo'>Imagize</div>
             <div id='tags'>
                 <select name='tag'>
-                    <option v-for="tag in tags" :key="tag" vlaue="tag">{{tag}}</option>
+                    <option v-for="tag in tags" :key="tag" value="tag">{{tag}}</option>
                 </select>
             </div>
             <div id='search-bar'>
@@ -43,17 +44,27 @@
         </header>
 
         <div id='content'>
-            <div class='card' v-for="item in items" :key="item.id" v-on:click="openImageModal(item)">
+            <div class='card' v-for="item in items" :key="item.id">
                 <div class="score">
-                    <img v-on:click="vote(item, 'up')" class="arrow" src="./css/arrow.svg" alt="">
+                    <img v-on:click="vote(item.id, 'up')" class="arrow" src="./css/arrow.svg" alt="">
                     <div>{{item.score}}</div>
-                    <img v-on:click="vote(item)" class="arrow down" src="./css/arrow.svg" alt="">
+                    <img v-on:click="vote(item.id)" class="arrow down" src="./css/arrow.svg" alt="">
                 </div>
                 <div class="title">{{item.title}}</div>
-                <img :src="item.url">
+                <img :src="item.url" v-on:click="linkTo(item.id)">
                 <div class="tag">{{item.tag}}</div>
             </div>
         </div>
+        <footer>
+            \/\/\/\/
+            <select class="" v-model='picsPerPage' name="imagePerPage">
+                <option value="3">3</option>
+                <option value="6">6</option>
+                <option value="12">12</option>
+            </select>
+            <div id='more' v-on:click="loadImages(true)">More</div>
+            \/\/\/\/
+        </footer>
     </div>
     <script src="/js/imagemodal.js"></script>
     <script src="/js/index.js"></script>
