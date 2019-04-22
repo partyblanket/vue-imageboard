@@ -62,7 +62,7 @@
                 this.showSubmit()
             }.bind(this));
 
-            
+
 
             this.current = location.hash.slice(1);
 
@@ -147,7 +147,7 @@
                 document.getElementById('submit-modal').classList.add('hidden')
             },
             linkTo: function (id) {
-                location.href = 'http://localhost:8080/#'+id
+                location.href = window.location.origin + '/#' + id
             }.bind(this),
             loadImages: function (more) {
                 if(!more) {
