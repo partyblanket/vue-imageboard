@@ -113,7 +113,6 @@ header #pic-submit:hover {
     border-radius: 5px;
     margin: 2rem;
     width: 55rem;
-
 }
 
 .card img{
@@ -183,6 +182,7 @@ div#dropzone {
     overflow: auto;
     max-height: 90vh;
     overflow: scroll;
+
 }
 
 #image-modal-container #modal-image {
@@ -218,6 +218,17 @@ div#dropzone {
     margin-left: 5rem;
     color: grey;
 
+}
+
+.comment-name {
+    display: flex;
+    align-items: center;
+    height: 3rem;
+
+}
+
+.comment-name > * {
+    padding: 1rem;
 }
 
 .comment-text {

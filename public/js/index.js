@@ -1,4 +1,3 @@
-// check if double downlpad prevent worls (recentupload)
 (()=>{
     const DEFAULTS = {
         form: {
@@ -25,6 +24,9 @@
             offset: "0",
             recentUpload: null,
             totalPics: null,
+            // Voting needs to be wrapped in 5sec delay
+            voting: null,
+
         },
         mounted: function(){
 
@@ -86,6 +88,7 @@
                     }
                 }
                 this.syncVote(id, up ? 1 : -1)
+                this.sortImages()
             },
             syncVote(id, score) {
                 const data = {
@@ -103,6 +106,10 @@
                 })
                 this.tags = [...new Set(temp)]
 
+            },
+            //(score * 10000000000::bigint) / (${date} - created_at)
+            sortImages: function () {
+                this.items.sort((a,b) => ((b.score * 10000000000) / (Date.now() - b.created_at)) - (a.score * 10000000000) / (Date.now() - a.created_at))
             },
 
             handleFileSelect (e) {
@@ -158,6 +165,7 @@
                     this.totalPics = data.count
                     this.offset = Number(this.offset) + Number(this.picsPerPage)
                     this.sortTags()
+                    this.sortImages()
                 }.bind(this))
                 .catch(error => console.log(error))
             },

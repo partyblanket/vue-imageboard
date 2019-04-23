@@ -11,7 +11,7 @@ Vue.component('commentdiv', {
                         <div class='comment-outer'>
                             <div class='comment' v-for="entry in comments" :key="entry.id">
                                 <div>
-                                    <div class='comment-name'><p><img class="add" id='entry.id' src="./css/add.svg"><div class='idx'>{{entry.id}}</div> {{entry.username}} on <i>{{Date(entry.created_at)}}</i></p></div>
+                                    <div class='comment-name'><p><img class="add" id='entry.id' src="./css/add.svg"><div class='idx hidden'>{{entry.id}}</div> {{entry.username}} on <i>{{Date(entry.created_at)}}</i></p></div>
                                     <div class='comment-text'>{{entry.comment}}</div>
                                     <commentdiv v-if='entry.children' :comments='entry.children'></commentdiv>
                                 </div>
@@ -94,12 +94,15 @@ Vue.component('image-modal', {
 
         addHidden(e){
             document.getElementById('image-modal').classList.add('hidden')
+            window.history.back()
         },
 
         newComment () {
+            this.name = this.content = ''
             axios.post('/comment', {name: this.name, content: this.content, id: this.modalitem, parent: this.commentingOn}).then(function(res) {
                 if(res.status === 200){
                     this.loadComments()
+
                 }else{
                     console.log('ERROR status ' + res.status);
                 }
