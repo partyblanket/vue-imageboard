@@ -44,7 +44,7 @@
         </header>
 
         <div id='content'>
-            <div class='card' v-for="item in items" :key="item.id">
+            <div class='card' v-for="item in items" v-bind:key="item.id">
                 <div class="score">
                     <img v-on:click="vote(item.id, 'up')" class="arrow" src="./css/arrow.svg" alt="">
                     <div>{{item.score}}</div>
@@ -55,15 +55,15 @@
                 <div class="tag">{{item.tag}}</div>
             </div>
         </div>
-        <footer>
-            \/\/\/\/
+        <footer v-if='offset <= totalPics'>
+
             <select class="" v-model='picsPerPage' name="imagePerPage">
                 <option value="3">3</option>
                 <option value="6">6</option>
                 <option value="12">12</option>
             </select>
             <div id='more' v-on:click="loadImages(true)">More</div>
-            \/\/\/\/
+
         </footer>
     </div>
     <script src="/js/imagemodal.js"></script>

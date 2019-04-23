@@ -117,7 +117,6 @@ app.post('/score', (req,res) => {
     console.log(score, id);
     db.vote(score, id)
         .then(response => {
-            console.log(res);
             return res.sendStatus(200)
         })
         .catch(e => {
@@ -129,11 +128,15 @@ app.post('/score', (req,res) => {
 app.post('/upload', uploader.single('file'), uploadToAWS, function(req, res) {
     // If nothing went wrong the file is already in the uploads directory
         const url = 'https://s3.amazonaws.com/tabascoimageboard/' + req.file.filename
-        res.json({
-            success: true,
-            url
-        });
         db.new(url, req.body.name, req.body.title, req.body.description, 1, req.body.tags.split(','), Date.now()).then(res => console.log(res))
+            .then((data) => {
+                res.json({
+                    success: true,
+                    data
+                });
+            })
+
+
 });
 
 app.listen(PORT, () => console.log(`listening to port ${PORT}`))

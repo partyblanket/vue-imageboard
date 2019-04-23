@@ -107,7 +107,6 @@
                 this.tags = [...new Set(temp)]
 
             },
-            //(score * 10000000000::bigint) / (${date} - created_at)
             sortImages: function () {
                 this.items.sort((a,b) => ((b.score * 10000000000) / (Date.now() - b.created_at)) - (a.score * 10000000000) / (Date.now() - a.created_at))
             },
@@ -130,17 +129,12 @@
                 formToSubmit.append('tags', this.formtags)
 
                 axios.post('/upload', formToSubmit).then(function(res) {
+
                     if(res.status === 200){
-                        this.items.unshift({
-                            title: this.title,
-                            description: this.description,
-                            tags: this.formtags.split(','),
-                            url: res.data.url,
-                            score: 1,
-                        })
+                        this.loadImages()
                         this.recentUpload = this.file
                         this.title = this.description = this.name = this.formtags = this.file = ''
-                        this.loadImages()
+
                     }else{
                         console.log('ERROR status ' + res.status);
                     }
@@ -157,6 +151,7 @@
                 location.href = window.location.origin + '/#' + id
             }.bind(this),
             loadImages: function (more) {
+                console.log('loading...');
                 if(!more) {
                     this.items = []
                 }
