@@ -98,11 +98,10 @@ Vue.component('image-modal', {
         },
 
         newComment () {
-            this.name = this.content = ''
             axios.post('/comment', {name: this.name, content: this.content, id: this.modalitem, parent: this.commentingOn}).then(function(res) {
                 if(res.status === 200){
                     this.loadComments()
-
+                    this.name = this.content = ''
                 }else{
                     console.log('ERROR status ' + res.status);
                 }

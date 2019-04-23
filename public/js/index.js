@@ -131,7 +131,6 @@
                 axios.post('/upload', formToSubmit).then(function(res) {
 
                     if(res.status === 200){
-                        this.loadImages()
                         this.recentUpload = this.file
                         this.title = this.description = this.name = this.formtags = this.file = ''
 
