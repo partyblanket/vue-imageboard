@@ -147,7 +147,9 @@
             }.bind(this),
             loadImages: function (more) {
                 console.log('loading...');
-                if(!more) {this.state.file
+                console.log(this);
+
+                if(!more) {
                     this.items = []
                 }
                 axios.get('/contents/' + this.picsPerPage + '/' + this.offset).then(function({data}) {
