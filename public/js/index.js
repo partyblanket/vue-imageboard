@@ -53,14 +53,10 @@
             });
 
             window.addEventListener("drop", function (e) {
-                // console.log("Drop files:", e);
                 e.preventDefault();
                 document.querySelector("#dropzone").style.visibility = "hidden";
                 document.querySelector("#dropzone").style.opacity = 0;
                 document.querySelector("#textnode").style.fontSize = "42px";
-
-                // console.log("Drop files:", e);
-                // this.file = e.dataTransfer.files[0]
                 this.showSubmit()
             }.bind(this));
 
@@ -151,7 +147,7 @@
             }.bind(this),
             loadImages: function (more) {
                 console.log('loading...');
-                if(!more) {
+                if(!more) {this.state.file
                     this.items = []
                 }
                 axios.get('/contents/' + this.picsPerPage + '/' + this.offset).then(function({data}) {
@@ -172,9 +168,7 @@
                     document.getElementById('image-modal').classList.remove('hidden')
                 }
 
-            },
-            // offset: function() {this.loadImages()},
-            // picsPerPage: function() {this.loadImages()},
+            }
         }
 
     })

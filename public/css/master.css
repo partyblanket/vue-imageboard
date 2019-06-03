@@ -70,29 +70,7 @@ header #pic-submit:hover {
     width: 40rem;
     background: white;
     padding: 2rem;
-
-
-
-    /* display: block; */
-    /* -webkit-transform: scale(1);
-    -webkit-transition: all linear 0.5s 0; */
 }
-
-
-
-
-/* .modal-open #submit-modal {
-  /* -webkit-filter: blur(3px);
-  -ms-filter: blur(3px);
-  -o-filter: blur(3px);
-  filter: blur(3px);
-  -webkit-transform: scale(0.8); */
-
-
-
-
-
-
 
 #content {
     display: flex;
